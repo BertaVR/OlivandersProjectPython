@@ -34,17 +34,40 @@ class Updateable:
 
 class ConjuredItem(Item, Updateable):
     def __init__(self, name, quality, sell_in):
-        Item.__init__(self, name, sell_in, quality)
+        Item.__init__(self, name, quality, sell_in)
+
+    def update_quality(self):
+        if self.sell_in > 0:
+            quality_increase = -2
+        elif self.sell_in < 0:
+            quality_increase = -4
+        self.quality += quality_increase
+        if self.quality < 0:  # esto nos asegura que la calidad no sea negativa, lo cual no es posible######
+            self.quality = 0
+        return self.quality
 
 
 class NormalItem(Item, Updateable):
     def __init__(self, name, quality, sell_in):
-        Item.__init__(self, name, sell_in, quality)
+        Item.__init__(self, name, quality, sell_in)
+
+    # def setSell_in(self):
+    #     self.sell_in -= 1
+
+    def update_quality(self):
+        if self.sell_in > 0:
+            quality_increase = -1
+        elif self.sell_in < 0:
+            quality_increase = -2
+        self.quality += quality_increase
+        if self.quality < 0:
+            self.quality = 0
+        return self.quality
 
 
 class Sulfuras(NormalItem):
     def __init__(self, name, quality, sell_in):
-        Item.__init__(self, name, sell_in, quality)
+        Item.__init__(self, name, quality, sell_in)
 
     def update_quality(self):
 
@@ -53,9 +76,10 @@ class Sulfuras(NormalItem):
 
 class AgedBrie(NormalItem):
     def __init__(self, name, quality, sell_in):
-        Item.__init__(self, name, sell_in, quality)
+        Item.__init__(self, name, quality, sell_in)
 
     def update_quality(self):
+
         pass
 
 
@@ -64,48 +88,17 @@ class Backstage(NormalItem):
         Item.__init__(self, name, quality, sell_in)
 
     def update_quality(self):
-
         if self.sell_in > 10:
-            self.quality += 1
+            quality_increase = 1
         elif self.sell_in > 5:
-            self.quality += 2
+            quality_increase = 2
         elif self.sell_in > 0:
-            self.quality += 3
+            quality_increase = 3
         elif self.sell_in == 0:
-            self.quality = 0
+            quality_increase = - self.quality
+        self.quality += quality_increase
+        if self.quality > 50:
+            self.quality = 50
         return self.quality
 
 ####REFACTORIZABLE BRO####
-
-
-class GildedRose(object):
-
-
-class Item:
-    def __init__(self, name, sell_in, quality):
-        self.name = name
-        self.sell_in = sell_in
-        self.quality = quality
-
-    def __repr__(self):
-        return "%s, %s, %s" % (self.name, self.sell_in, self.quality)
-
-
-class Updatable:
-    def update_quality(self):
-        pass
-
-
-class NormalItem(Item, Updatable):
-
-
-class ConjuredItem(Item, Updatable):
-
-
-class Sulfuras(NormalItem):
-
-
-class AgedBrie(NormalItem):
-
-
-class Backstage(NormalItem)

@@ -25,3 +25,16 @@ def test_Backstage():
     assert Backstage("backstage_passes", 15, 4).update_quality() == 18
     assert Backstage("backstage_passes", 15, 6).update_quality() == 17
     assert Backstage("backstage_passes", 0, 11).update_quality() == 1
+    assert Backstage("backstage_passes", 50, 0).update_quality() == 0
+
+
+def test_ConjuredItem():
+    assert ConjuredItem("conjured_flask", 20, 15).update_quality() == 18
+    assert ConjuredItem("conjured_flask", 20, -3).update_quality() == 16
+    assert ConjuredItem("conjured_flask", 0, -3).update_quality() == 0
+
+
+def test_NormalItem():
+    assert NormalItem("Elixir of the Mongoose", 20, 15).update_quality() == 19
+    assert NormalItem("Elixir of the Mongoose", 20, -3).update_quality() == 18
+    assert NormalItem("Elixir of the Mongoose", 0, -3).update_quality() == 0
