@@ -1,7 +1,7 @@
 class Inventory(object):
 
     def __init__(self, items):
-        self.items = items
+        self.items = list(items)
 
     def update_quality(self):
         for item in self.items:
@@ -17,16 +17,32 @@ class Item:
     def __repr__(self):
         return "%s, %s, %s" % (self.name, self.quality, self.sell_in)
 
-    # holaholahola esto lo estoy escribiendo desde rama Berta
-    # jjbujbub
+
+# class ItemType(Inventory):
+#     def __init__(self, items):
+#         self.items = list(items)
+
+#     def ItemTypes(self):
+#         normalitem = ["'ConjuredManaCake',"]
+#         AgedItems = ['AgedBrie']
+#         EventItems = ['Backstage']
+#         Legendaries = ['Sulfuras']
+#         Conjured = ['(conjured)ConjuredManaCake']
+
+#         for item in items:
+#             if item in normalitem:
+#                 NormalItem.update_quality(self, item)
+#             if item in AgedItems:
+#                 AgedBrie(NormalItem(item, Updateable))
+#             if item in EventItems:
+#                 Backstage(NormalItem(item, Updateable))
+#             if item in Legendaries:
+#                 Sulfuras(NormalItem(item, Updateable))
+#             if item in Conjured:
+#                 ConjuredItem(item, Updateable)
 
 
 class Updateable:
-    # def ItemTypes():
-    #     AgedItems=['AgedBrie']
-    #     EventItems=['Backstage']
-    #     Legendaries=['Sulfuras']
-    #     Conjured=[]
 
     def update_quality(self):
         pass
@@ -35,6 +51,9 @@ class Updateable:
 class ConjuredItem(Item, Updateable):
     def __init__(self, name, quality, sell_in):
         Item.__init__(self, name, quality, sell_in)
+
+    def update_sell_in(self):
+        self.sell_in -= 1
 
     def update_quality(self):
         if self.sell_in > 0:
@@ -51,8 +70,8 @@ class NormalItem(Item, Updateable):
     def __init__(self, name, quality, sell_in):
         Item.__init__(self, name, quality, sell_in)
 
-    # def setSell_in(self):
-    #     self.sell_in -= 1
+    def update_sell_in(self):
+        self.sell_in -= 1  # tenemos dudas
 
     def update_quality(self):
         if self.sell_in > 0:
@@ -70,8 +89,9 @@ class Sulfuras(NormalItem):
         Item.__init__(self, name, quality, sell_in)
 
     def update_quality(self):
-
-        pass
+        # Seteamos la calidad en 80 por si fuera el caso de que hubiera un error a la hora de introducir la calidad del sulfuras, no hacemos un assert porque es más eficiente que el programa no se pare, no??
+        self.quality = 80
+        return self.quality
 
 
 class AgedBrie(NormalItem):
@@ -79,8 +99,14 @@ class AgedBrie(NormalItem):
         Item.__init__(self, name, quality, sell_in)
 
     def update_quality(self):
-
-        pass
+        if self.sell_in >= 0:
+            quality_increase = 1
+        elif self.sell_in < 0:
+            quality_increase = 2
+        self.quality += quality_increase
+        if self.quality > 50:
+            self.quality = 50
+        return self.quality
 
 
 class Backstage(NormalItem):
@@ -100,5 +126,3 @@ class Backstage(NormalItem):
         if self.quality > 50:
             self.quality = 50
         return self.quality
-
-####REFACTORIZABLE BRO####
